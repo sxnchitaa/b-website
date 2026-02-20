@@ -1,0 +1,139 @@
+<!-- File: /index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday David 🎉</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #ff6a88, #ff99ac, #ffb6c1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+  transition: all 1s ease;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px white; }
+  to { text-shadow: 0 0 25px yellow, 0 0 40px orange; }
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.balloon {
+  position: absolute;
+  bottom: -100px;
+  width: 50px;
+  height: 70px;
+  border-radius: 50% 50% 45% 45%;
+  animation: float 10s linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-120vh); }
+}
+
+button {
+  position: absolute;
+  bottom: 30px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<h1 id="message">🎉 Very Happy Birthday David 🎉</h1>
+
+<button onclick="playMusic()">▶ Play Music</button>
+
+<audio id="music" loop>
+  <source src="https://www2.cs.uic.edu/~i101/SoundFiles/HappyBirthday.mid" type="audio/midi">
+</audio>
+
+<script>
+const messageEl = document.getElementById("message");
+
+setTimeout(() => {
+  messageEl.innerHTML = "🎊 NIGGA 🎊";
+}, 3000);
+
+setTimeout(() => {
+  messageEl.innerHTML = "🎂 Wishing you joy, success 🎂";
+}, 6000);
+
+function playMusic() {
+  document.getElementById("music").play();
+}
+
+// Balloons
+for (let i = 0; i < 12; i++) {
+  const balloon = document.createElement("div");
+  balloon.className = "balloon";
+  balloon.style.left = Math.random() * 100 + "vw";
+  balloon.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
+  balloon.style.animationDuration = (6 + Math.random() * 5) + "s";
+  document.body.appendChild(balloon);
+}
+
+// Confetti
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const confetti = Array.from({ length: 200 }).map(() => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  r: Math.random() * 6 + 2,
+  d: Math.random() * 150,
+  color: `hsl(${Math.random()*360}, 100%, 50%)`
+}));
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confetti.forEach(c => {
+    ctx.beginPath();
+    ctx.fillStyle = c.color;
+    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+    ctx.fill();
+    c.y += 2;
+    if (c.y > canvas.height) {
+      c.y = 0;
+      c.x = Math.random() * canvas.width;
+    }
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
